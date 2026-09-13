@@ -2610,29 +2610,34 @@ function addStudyTask() {
 
 function formatStudyTime(time) {
 
-    const parts =
-        time.split(":");
+    if (!time || typeof time !== "string") {
+        return "No time set";
+    }
 
+    const parts = time.split(":");
 
-    let hour =
-        parseInt(parts[0]);
+    if (parts.length < 2) {
+        return "No time set";
+    }
 
+    const hours = parts[0];
+    const minutes = parts[1];
 
-    const minute =
-        parts[1];
+    let hour = parseInt(hours);
 
+    if (isNaN(hour)) {
+        return "No time set";
+    }
 
-    const ampm =
-        hour >= 12
-        ? "PM"
-        : "AM";
+    const ampm = hour >= 12 ? "PM" : "AM";
 
+    hour = hour % 12;
 
-    hour =
-        hour % 12 || 12;
+    if (hour === 0) {
+        hour = 12;
+    }
 
-
-    return `${hour}:${minute} ${ampm}`;
+    return `${hour}:${minutes} ${ampm}`;
 }
 
 

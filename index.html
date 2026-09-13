@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloom 🌸</title>
+
+    <link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#d77fa8">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Bloom">
+
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+    <style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background:
+            radial-gradient(circle at top left, #ffe5f1 0%, transparent 35%),
+            radial-gradient(circle at bottom right, #f7dff0 0%, transparent 35%),
+            #fff7fb;
+        color: #5b4050;
+        min-height: 100vh;
+    }
+
+    header {
+        text-align: center;
+        padding: 55px 20px 35px;
+    }
+
+    h1 {
+        margin: 0;
+        font-size: 52px;
+        color: #d77fa8;
+        letter-spacing: 1px;
+        text-shadow: 0 4px 15px rgba(215, 127, 168, 0.2);
+    }
+
+    header p {
+        margin-top: 12px;
+        color: #9b7185;
+        font-size: 16px;
+    }
+
+    .container {
+        max-width: 950px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    /* HOME CARDS */
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 35px 20px;
+        text-align: center;
+        border-radius: 30px;
+        cursor: pointer;
+        border: 1px solid #f8dce9;
+        box-shadow: 0 10px 30px rgba(180, 120, 150, 0.12);
+        transition: all 0.25s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 18px 35px rgba(180, 120, 150, 0.2);
+    }
+
+    .card:active {
+        transform: scale(0.98);
+    }
+
+    .emoji {
+        font-size: 52px;
+        margin-bottom: 12px;
+    }
+
+    .card h2 {
+        margin: 8px 0;
+        color: #b96891;
+        font-size: 23px;
+    }
+
+    .card p {
+        color: #9b7185;
+        margin-bottom: 0;
+    }
+
+    /* PAGES */
+
+    .page {
+        display: none;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 35px;
+        margin-top: 25px;
+        border-radius: 30px;
+        border: 1px solid #f8dce9;
+        box-shadow: 0 12px 35px rgba(180, 120, 150, 0.15);
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .page h2 {
+        color: #b96891;
+        font-size: 28px;
+    }
+
+    .page p {
+        color: #9b7185;
+    }
+
+    /* INPUTS */
+
+    textarea,
+    input[type="text"] {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid #f2d5e3;
+        border-radius: 18px;
+        background: #fffafd;
+        color: #5b4050;
+        font-family: inherit;
+        font-size: 15px;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    textarea {
+        height: 200px;
+        resize: vertical;
+    }
+
+    textarea:focus,
+    input[type="text"]:focus {
+        border-color: #e9a5c5;
+        box-shadow: 0 0 0 4px rgba(233, 165, 197, 0.15);
+    }
+
+    /* BUTTONS */
+
+    button {
+        border: none;
+        padding: 12px 20px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #e9a5c5, #d77fa8);
+        color: white;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 5px 15px rgba(215, 127, 168, 0.2);
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(215, 127, 168, 0.3);
+    }
+
+    button:active {
+        transform: scale(0.97);
+    }
+
+    /* TASKS */
+
+    .task {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff5fa;
+        padding: 13px 16px;
+        margin-top: 12px;
+        border-radius: 18px;
+        border: 1px solid #f7dce9;
+        transition: 0.2s;
+    }
+
+    .task:hover {
+        transform: translateX(3px);
+        background: #fff0f7;
+    }
+
+    .task label {
+        flex: 1;
+        cursor: pointer;
+    }
+
+    .task input[type="checkbox"] {
+        accent-color: #d77fa8;
+        margin-right: 8px;
+        cursor: pointer;
+    }
+
+    .delete-btn {
+        margin: 0 0 0 12px;
+        padding: 8px 11px;
+        background: #f0b3cc;
+        box-shadow: none;
+    }
+
+    .delete-btn:hover {
+        background: #df8faf;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 700px) {
+        header {
+            padding: 40px 15px 25px;
+        }
+
+        h1 {
+            font-size: 42px;
+        }
+
+        .cards {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .card {
+            padding: 28px 20px;
+        }
+
+        .page {
+            padding: 25px 20px;
+        }
+    }
+</style>
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🌸 Bloom</h1>
+        <p>Your little space to plan, study & write ♡</p>
+    </header>
+
+    <div class="container">
+
+        <!-- HOME -->
+        <div class="cards" id="home">
+
+            <div class="card" onclick="openDiary()">
+                <div class="emoji">📔</div>
+                <h2>My Diary</h2>
+                <p>Write about your day ♡</p>
+            </div>
+
+            <div class="card" onclick="openPlanner()">
+                <div class="emoji">📚</div>
+                <h2>Study Planner</h2>
+                <p>Plan your study time ✨</p>
+            </div>
+
+            <div class="card" onclick="openHomework()">
+                <div class="emoji">✏️</div>
+                <h2>Homework</h2>
+                <p>Keep track of your work 🌷</p>
+            </div>
+
+        </div>
+
+
+        <!-- DIARY -->
+        <div class="page" id="diaryPage">
+
+            <button onclick="goHome()">← Home</button>
+
+            <h2>📔 My Diary</h2>
+            <p>How was your day? 🌸</p>
+
+            <textarea
+                id="diaryText"
+                placeholder="Write about your day here..."
+            ></textarea>
+
+            <br>
+
+            <button onclick="saveDiary()">Save Entry 🌸</button>
+
+            <p id="message"></p>
+
+        </div>
+
+
+        <!-- STUDY PLANNER -->
+        <div class="page" id="plannerPage">
+
+            <button onclick="goHome()">← Home</button>
+
+            <h2>📚 Study Planner</h2>
+            <p>Plan what you want to study 🌷</p>
+
+            <input
+                id="studyTask"
+                type="text"
+                placeholder="What do you want to study?"
+            >
+
+            <br>
+
+            <button onclick="addStudyTask()">Add Task ✨</button>
+
+            <div id="studyList"></div>
+
+        </div>
+
+
+        <!-- HOMEWORK -->
+        <div class="page" id="homeworkPage">
+
+            <button onclick="goHome()">← Home</button>
+
+            <h2>✏️ Homework</h2>
+            <p>Keep track of your homework 🌷</p>
+
+            <input
+                id="homeworkTask"
+                type="text"
+                placeholder="What homework do you have?"
+            >
+
+            <br>
+
+            <button onclick="addHomework()">Add Homework ✨</button>
+
+            <div id="homeworkList"></div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        /* HOME & PAGES */
+
+        function openDiary() {
+            document.getElementById("home").style.display = "none";
+            document.getElementById("plannerPage").style.display = "none";
+            document.getElementById("homeworkPage").style.display = "none";
+            document.getElementById("diaryPage").style.display = "block";
+        }
+
+
+        function openPlanner() {
+            document.getElementById("home").style.display = "none";
+            document.getElementById("diaryPage").style.display = "none";
+            document.getElementById("homeworkPage").style.display = "none";
+            document.getElementById("plannerPage").style.display = "block";
+        }
+
+
+        function openHomework() {
+            document.getElementById("home").style.display = "none";
+            document.getElementById("diaryPage").style.display = "none";
+            document.getElementById("plannerPage").style.display = "none";
+            document.getElementById("homeworkPage").style.display = "block";
+        }
+
+
+        function goHome() {
+            document.getElementById("diaryPage").style.display = "none";
+            document.getElementById("plannerPage").style.display = "none";
+            document.getElementById("homeworkPage").style.display = "none";
+            document.getElementById("home").style.display = "grid";
+        }
+
+
+        /* DIARY */
+
+        function saveDiary() {
+
+            const text = document.getElementById("diaryText").value;
+
+            if (text.trim() === "") {
+                document.getElementById("message").innerText =
+                    "Write something first 🌷";
+                return;
+            }
+
+            localStorage.setItem("bloomDiary", text);
+
+            document.getElementById("message").innerText =
+                "Saved! Your diary entry is safe 💗";
+        }
+
+
+        /* STUDY PLANNER */
+
+        function addStudyTask() {
+
+            const task = document.getElementById("studyTask").value;
+
+            if (task.trim() === "") {
+                alert("Write a study task first 🌷");
+                return;
+            }
+
+            const item = document.createElement("div");
+
+            item.className = "task";
+
+            item.innerHTML = `
+                <label>
+                    <input
+                        type="checkbox"
+                        onchange="saveStudyTasks()"
+                    >
+                    📚 ${task}
+                </label>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteStudyTask(this)"
+                >
+                    🗑️
+                </button>
+            `;
+
+            document.getElementById("studyList").appendChild(item);
+
+            document.getElementById("studyTask").value = "";
+
+            saveStudyTasks();
+        }
+
+
+        function saveStudyTasks() {
+
+            const tasks = [];
+
+            document
+                .querySelectorAll("#studyList .task")
+                .forEach(item => {
+
+                    const checkbox =
+                        item.querySelector("input[type='checkbox']");
+
+                    const label =
+                        item.querySelector("label").innerText;
+
+                    tasks.push({
+                        text: label.replace("📚 ", ""),
+                        completed: checkbox.checked
+                    });
+
+                });
+
+            localStorage.setItem(
+                "bloomStudyTasks",
+                JSON.stringify(tasks)
+            );
+        }
+
+
+        function deleteStudyTask(button) {
+
+            button.parentElement.remove();
+
+            saveStudyTasks();
+        }
+
+
+        function loadStudyTasks() {
+
+            const savedTasks =
+                localStorage.getItem("bloomStudyTasks");
+
+            if (!savedTasks) return;
+
+            const tasks = JSON.parse(savedTasks);
+
+            tasks.forEach(task => {
+
+                const item = document.createElement("div");
+
+                item.className = "task";
+
+                item.innerHTML = `
+                    <label>
+                        <input
+                            type="checkbox"
+                            ${task.completed ? "checked" : ""}
+                            onchange="saveStudyTasks()"
+                        >
+                        📚 ${task.text}
+                    </label>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteStudyTask(this)"
+                    >
+                        🗑️
+                    </button>
+                `;
+
+                document
+                    .getElementById("studyList")
+                    .appendChild(item);
+            });
+        }
+
+
+        /* HOMEWORK */
+
+        function addHomework() {
+
+            const homework =
+                document.getElementById("homeworkTask").value;
+
+            if (homework.trim() === "") {
+                alert("Write a homework task first 🌷");
+                return;
+            }
+
+            const item = document.createElement("div");
+
+            item.className = "task";
+
+            item.innerHTML = `
+                <label>
+                    <input
+                        type="checkbox"
+                        onchange="saveHomework()"
+                    >
+                    ✏️ ${homework}
+                </label>
+
+                <button
+                    class="delete-btn"
+                    onclick="deleteHomework(this)"
+                >
+                    🗑️
+                </button>
+            `;
+
+            document
+                .getElementById("homeworkList")
+                .appendChild(item);
+
+            document.getElementById("homeworkTask").value = "";
+
+            saveHomework();
+        }
+
+
+        function saveHomework() {
+
+            const tasks = [];
+
+            document
+                .querySelectorAll("#homeworkList .task")
+                .forEach(item => {
+
+                    const checkbox =
+                        item.querySelector("input[type='checkbox']");
+
+                    const label =
+                        item.querySelector("label").innerText;
+
+                    tasks.push({
+                        text: label.replace("✏️ ", ""),
+                        completed: checkbox.checked
+                    });
+
+                });
+
+            localStorage.setItem(
+                "bloomHomework",
+                JSON.stringify(tasks)
+            );
+        }
+
+
+        function deleteHomework(button) {
+
+            button.parentElement.remove();
+
+            saveHomework();
+        }
+
+
+        function loadHomework() {
+
+            const savedHomework =
+                localStorage.getItem("bloomHomework");
+
+            if (!savedHomework) return;
+
+            const tasks = JSON.parse(savedHomework);
+
+            tasks.forEach(task => {
+
+                const item = document.createElement("div");
+
+                item.className = "task";
+
+                item.innerHTML = `
+                    <label>
+                        <input
+                            type="checkbox"
+                            ${task.completed ? "checked" : ""}
+                            onchange="saveHomework()"
+                        >
+                        ✏️ ${task.text}
+                    </label>
+
+                    <button
+                        class="delete-btn"
+                        onclick="deleteHomework(this)"
+                    >
+                        🗑️
+                    </button>
+                `;
+
+                document
+                    .getElementById("homeworkList")
+                    .appendChild(item);
+            });
+        }
+
+
+        /* LOAD SAVED DATA */
+
+        const savedDiary =
+            localStorage.getItem("bloomDiary");
+
+        if (savedDiary) {
+            document.getElementById("diaryText").value =
+                savedDiary;
+        }
+
+        loadStudyTasks();
+        loadHomework();
+
+    </script>
+
+<script>
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./service-worker.js")
+            .then(() => {
+                console.log("Bloom service worker registered 🌸");
+            })
+            .catch(error => {
+                console.error("Bloom service worker failed:", error);
+            });
+    });
+}
+</script>
+
+</body>
+</html>
